@@ -27,15 +27,20 @@ end
 
 #authenticate user
 def authenticate_user(email, password) do
-  case get_user_by_email(email) do
-    nil -> {:error, "Invalid email or password"}
-    user ->
+  user = get_user_by_email(email)
+
+    if user do
+      #nested if statement
       if Pbkdf2.verify_pass(password, user.password_hash) do
         {:ok, user}
       else
         {:error, "Invalid email or password"}
       end
+      #nested if statement
+    else
+      {:error, "Invalid email or password"}
     end
+
   end
 
 end
