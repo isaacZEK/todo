@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks List</title>
+  <style>
+    /* Basic reset to remove default margins and padding */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Body styling */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Center the content in the page */
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 2em;
+        color: #333;
+    }
+
+    /* Table container */
+    .task-table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table header styling */
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    /* Button styling */
+    button, .button-link {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    button:hover, .button-link:hover {
+        background-color: #45a049;
+    }
+
+    /* Link styling */
+    a {
+        text-decoration: none;
+        color: #007BFF;
+        font-size: 14px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* Actions container */
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Add task link styling */
+    .add-task-link {
+        display: block;
+        text-align: center;
+        margin: 20px 0;
+        font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+ <a href="/tasks/logout" class="button-link" style="background:red">Logout</a>
+
+
+  <h1>Tasks</h1>
+
+  <!-- Display tasks in a table -->
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for task <- @tasks do %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.description %></td>
+          <td><%= if task.done, do: "Completed", else: "Not Completed" %></td>
+          <td class="actions">
+            <a href={"/todo/#{task.id}/edit"} class="button-link">Edit</a>
+            <a href={"/todo/#{task.id}/delete"} class="button-link">Delete</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <!-- Link to add a new task -->
+  <a href="/todo/new" class="add-task-link">Add New Task</a>
+</body>
+</html>

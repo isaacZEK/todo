@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Task</title>
+  <style>
+    /* Basic reset to remove default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Center the content in the page */
+  h1 {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 2em;
+    color: #333;
+  }
+  
+  /* Form container */
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form fields styling */
+  div {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  input[type="text"], textarea, input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  input[type="checkbox"] {
+    width: auto;
+    margin-top: 0;
+  }
+  
+  /* Button styling */
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Link styling */
+  a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 14px;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  </style>
+</head>
+<body>
+  <h1 >Add New Task</h1>
+
+  <!-- Simple form for adding a task -->
+  <form action="/todo/create" method="post">
+    <div>
+      <label for="title">Title</label>
+      <input type="text" id="title" name="task[title]" required>
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="task[description]"></textarea>
+    </div>
+
+    <div>
+      <label for="done">Done</label>
+      <input type="checkbox" id="done" name="task[done]">
+    </div>
+
+    <div>
+      <button type="submit">Save Task</button>
+    </div>
+  </form>
+
+  <a href="/todo">Back to Tasks</a>
+</body>
+</html>
