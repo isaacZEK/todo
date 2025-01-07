@@ -4,14 +4,17 @@ defmodule Todo.Tasks do
  alias Todo.Task
 
  #fetch all records
- def list_tasks do
-   Repo.all(Task)
+ def list_tasks(user_id) do
+  Task
+  |> where([t], is_nil(t.deleted_at) and t.user_id == ^user_id)
+  |> Repo.all()
  end
 
-#get a single task ID
+#get a single task based on user
 def get_task!(id) do
-  task_schema = Task
-  Repo.get!(task_schema, id)
+  Task
+  |> where([t], is_nil(t.deleted_at) and t.id == ^id)
+  |> Repo.one!()
 end
 
 #create tasks
@@ -27,9 +30,21 @@ def update_task(%Task{} = task, attrs) do
  Repo.update(changeset)
 end
 
-#delete a task
-def delete_task(%Task{}=task) do
-  Repo.delete(task)
+def soft_delete_task(%Task{} = task) do
+  task
+  |> Task.changeset(%{deleted_at: DateTime.utc_now()})
+  |> Repo.update()
 end
+
+#delete a task
+# def delete_task(%Task{}=task) do
+#   Repo.delete(task)
+# end
+
+#get a single task ID
+# def get_task!(id) do
+#   task_schema = Task
+#   Repo.get!(task_schema, id)
+# end
 
 end

@@ -18,6 +18,10 @@ alias Pbkdf2
     User.registration_changeset(user, attrs)  # Use the same changeset
   end
 
+  def get_user_by_id(id) do
+    Repo.get(User, id)
+  end
+
 
 
 #retrieves user by email

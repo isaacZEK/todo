@@ -4,12 +4,23 @@ defmodule TodoWeb.TaskController do
   alias Todo.Repo
   alias Todo.Task
   alias Todo.Tasks
+  alias Todo.Accounts
+
+  #  # Action to display the index page
+  #  def tasks(conn, _params) do
+  #   tasks = Repo.all(Task)  # Fetch all tasks from the database
+  #   render(conn, "show.html", tasks: tasks)
+  # end
 
    # Action to display the index page
-   def tasks(conn, _params) do
-    tasks = Repo.all(Task)  # Fetch all tasks from the database
-    render(conn, "show.html", tasks: tasks)
-  end
+def tasks(conn, _params) do
+  user = get_current_user(conn)
+  tasks = Tasks.list_tasks(user.id)
+  render(conn, "show.html", tasks: tasks)
+end
+
+
+
 
   #show new form validation
   def new(conn, _params) do
@@ -38,17 +49,43 @@ defmodule TodoWeb.TaskController do
   end
 
   #deleting a task
-  def delete(conn, %{"id" => id}) do
-    task=Repo.get!(Task, id)
+  # def delete(conn, %{"id" => id}) do
+  #   task=Repo.get!(Task, id)
 
-    #delete task
-    Repo.delete!(task)
+  #   #delete task
+  #   Repo.delete!(task)
 
-    #success flash redirect
-    flash = put_flash(conn,:info, "Task deleted sucessfully,")
-    redirect(flash, to: "/todo")
-  end
+  #   #success flash redirect
+  #   flash = put_flash(conn,:info, "Task deleted sucessfully,")
+  #   redirect(flash, to: "/todo")
+  # end
 
+
+ def soft_delete(conn, %{"id" => id}) do
+   user = get_current_user(conn)
+   soft_delete = Tasks.soft_delete_task(id)
+   case soft_delete do
+    {:ok, _task} ->
+      conn
+      |> put_flash(:info, "Task deleted successfully")
+      |> redirect(to: "/todo")
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Task deleted successfully!")
+        |> redirect(to: "/todo")
+        {:error, _changeset} ->
+          conn
+          |> put_flash(:error, "Failed to delete task!")
+          |> redirect(to: "/todo")
+   end
+ end
+
+ #Helper function to get the current user from the session or authentication context
+defp get_current_user(conn) do
+  user_id = get_session(conn, :user_id)
+  Accounts.get_user_by_id(user_id)
+end
 
   #editing a task
   def edit(conn,%{"id" => id}) do

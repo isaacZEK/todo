@@ -7,6 +7,7 @@ defmodule Todo.Task do
     field :title, :string
     field :description, :string
     field :done, :boolean, default: false
+    field :deleted_at, :utc_datetime
 
     timestamps()
 
@@ -15,7 +16,7 @@ defmodule Todo.Task do
 
   def changeset(task,attrs) do
     task
-    |> cast(attrs,[:title, :description, :done])
+    |> cast(attrs,[:title, :description, :done, :deleted_at])
     |> validate_required([:title, :description])
   end
 
