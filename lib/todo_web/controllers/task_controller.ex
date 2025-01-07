@@ -24,7 +24,6 @@ end
 
   #show new form validation
   def new(conn, _params) do
-    # so skip the default app layout.
     changeset = Task.changeset(%Task{}, %{})
     render(conn, :new, changeset: changeset)
   end
@@ -32,6 +31,8 @@ end
 
   #create a task in the database
   def create(conn,%{"task" => task_params}) do
+    user = get_current_user(conn)
+    task_params = Map.put(task_params, "user_id", user.id)
 
     #create a changeset with input parameters
    changeset = Task.changeset(%Task{}, task_params)
@@ -48,23 +49,12 @@ end
      end
   end
 
-  #deleting a task
-  # def delete(conn, %{"id" => id}) do
-  #   task=Repo.get!(Task, id)
-
-  #   #delete task
-  #   Repo.delete!(task)
-
-  #   #success flash redirect
-  #   flash = put_flash(conn,:info, "Task deleted sucessfully,")
-  #   redirect(flash, to: "/todo")
-  # end
-
-
  def soft_delete(conn, %{"id" => id}) do
-   user = get_current_user(conn)
-   soft_delete = Tasks.soft_delete_task(id)
-   case soft_delete do
+   task = Repo.get!(Task, id)
+
+   delete_result = Tasks.soft_delete_task(task)
+
+   case delete_result do
     {:ok, _task} ->
       conn
       |> put_flash(:info, "Task deleted successfully")
@@ -72,12 +62,8 @@ end
 
       {:error, _changeset} ->
         conn
-        |> put_flash(:info, "Task deleted successfully!")
+        |> put_flash(:info, "Failed to delete task!")
         |> redirect(to: "/todo")
-        {:error, _changeset} ->
-          conn
-          |> put_flash(:error, "Failed to delete task!")
-          |> redirect(to: "/todo")
    end
  end
 

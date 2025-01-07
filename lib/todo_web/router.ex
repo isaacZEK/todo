@@ -55,7 +55,7 @@ defmodule TodoWeb.Router do
     patch "/:id/update", TaskController, :update
 
     #delete a task
-    get "/:id/delete", TaskController, :delete
+    get "/:id/delete", TaskController, :soft_delete
 
   end
 
