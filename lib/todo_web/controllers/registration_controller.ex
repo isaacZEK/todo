@@ -28,7 +28,6 @@ def create(conn,user_params) do
 end
 
 
-
   # ------------------------
   # SESSION HANDLING STARTS
   # ------------------------

@@ -19,9 +19,6 @@ def tasks(conn, _params) do
   render(conn, "show.html", tasks: tasks)
 end
 
-
-
-
   #show new form validation
   def new(conn, _params) do
     changeset = Task.changeset(%Task{}, %{})
@@ -34,18 +31,20 @@ end
     user = get_current_user(conn)
     task_params = Map.put(task_params, "user_id", user.id)
 
-    #create a changeset with input parameters
+    #create a changeset with the input provided
    changeset = Task.changeset(%Task{}, task_params)
 
    #attempt to insert the new task into the database
    case Repo.insert(changeset) do
      {:ok, _task_params} ->
-      flash = put_flash(conn, :info, "Task created sucessfully!")
-      redirect(flash, to: "/todo")
+      conn
+      |>put_flash(:info, "Task created sucessfully!")
+      |>redirect(to: "/todo")
 
       {:error, changeset} ->
-        put_flash(conn, :info, "Task creation failed!")
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> put_flash(:info, "Task creation failed!")
+        |> render("new.html", changeset: changeset)
      end
   end
 
@@ -83,8 +82,6 @@ end
   @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Tasks.get_task!(id)
-    IO.inspect(task, label: "Task 1")
-    IO.inspect(task_params, label: "Task 2")
 
     case Tasks.update_task(task, task_params) do
       {:ok, _task} ->

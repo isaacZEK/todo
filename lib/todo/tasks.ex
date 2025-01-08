@@ -36,15 +36,4 @@ def soft_delete_task(%Task{} = task) do
   |> Repo.update()
 end
 
-#delete a task
-# def delete_task(%Task{}=task) do
-#   Repo.delete(task)
-# end
-
-#get a single task ID
-# def get_task!(id) do
-#   task_schema = Task
-#   Repo.get!(task_schema, id)
-# end
-
 end
