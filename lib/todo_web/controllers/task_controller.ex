@@ -6,11 +6,13 @@ defmodule TodoWeb.TaskController do
   alias Todo.Tasks
   alias Todo.Accounts
 
-  #  # Action to display the index page
-  #  def tasks(conn, _params) do
-  #   tasks = Repo.all(Task)  # Fetch all tasks from the database
-  #   render(conn, "show.html", tasks: tasks)
-  # end
+
+
+ #Helper function to get the current user from the session or authentication context
+defp get_current_user(conn) do
+  user_id = get_session(conn, :user_id)
+  Accounts.get_user_by_id(user_id)
+end
 
    # Action to display the index page
 def tasks(conn, _params) do
@@ -65,12 +67,6 @@ end
         |> redirect(to: "/todo")
    end
  end
-
- #Helper function to get the current user from the session or authentication context
-defp get_current_user(conn) do
-  user_id = get_session(conn, :user_id)
-  Accounts.get_user_by_id(user_id)
-end
 
   #editing a task
   def edit(conn,%{"id" => id}) do

@@ -6,7 +6,7 @@ defmodule Todo.Tasks do
  #fetch all records
  def list_tasks(user_id) do
   Task
-  |> where([t], is_nil(t.deleted_at) and t.user_id == ^user_id)
+  |> where([task], is_nil(task.deleted_at) and task.user_id == ^user_id)
   |> Repo.all()
  end
 
@@ -32,7 +32,7 @@ end
 
 def soft_delete_task(%Task{} = task) do
   task
-  |> Task.changeset(%{deleted_at: DateTime.utc_now()})
+  |> Task.changeset(%{"deleted_at" => DateTime.utc_now()})
   |> Repo.update()
 end
 
