@@ -11,7 +11,7 @@ defmodule TodoWeb.TaskController do
  #Helper function to get the current user from the session or authentication context
 defp get_current_user(conn) do
   user_id = get_session(conn, :user_id)
-  Accounts.get_user_by_id(user_id)
+  Accounts.get_user_by_id!(user_id)
 end
 
    # Action to display the index page

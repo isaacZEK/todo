@@ -1,4 +1,5 @@
 defmodule TodoWeb.Router do
+  # alias ElixirLS.LanguageServer.Providers.Completion.Reducers.DocsSnippets
   use TodoWeb, :router
 
   pipeline :browser do
@@ -6,9 +7,20 @@ defmodule TodoWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {TodoWeb.Layouts, :root}
-    # plug :protect_from_forgery
     plug :put_secure_browser_headers
+    # plug :protect_from_forgery
+
+    # plug TodoWeb.AuthPlug
   end
+
+
+
+  pipeline :authenticate do
+    plug TodoWeb.AuthPlug
+    plug :fetch_session
+  end
+
+
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -17,7 +29,7 @@ defmodule TodoWeb.Router do
   # scope "/", TodoWeb do
   #   pipe_through :browser
 
-  #   # get "/", PageController, :home
+  #   get "/", PageController, :home
   # end
 
   scope "/tasks", TodoWeb do
@@ -38,7 +50,7 @@ defmodule TodoWeb.Router do
   end
 
   scope "/todo", TodoWeb do
-    pipe_through [:browser, TodoWeb.AuthPlug] # Authenticate using plug
+    pipe_through :browser # Authenticate using plug
     #fetch tasks homepage template
     get "/", TaskController, :tasks
 
@@ -58,6 +70,18 @@ defmodule TodoWeb.Router do
     get "/:id/delete", TaskController, :soft_delete
 
   end
+
+  scope "/admin", TodoWeb do
+    pipe_through :browser
+    pipe_through :authenticate
+
+    get "/", AdminController, :index
+    get "/:id/delete", AdminController, :delete
+    get "/:id/tasks", AdminController, :users
+    # get "/users/:id/tasks", TaskController, :tasks
+
+  end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", TodoWeb do

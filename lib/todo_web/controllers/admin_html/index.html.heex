@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    /* Basic reset to remove default margins and padding */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Body styling */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+    }
+
+    /* Center the content in the page */
+    h1 {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 2em;
+        color: #333;
+    }
+
+    .admin-table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .button-link {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .button-link:hover {
+        background-color: #0056b3;
+        text-decoration: none;
+        color: white;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<a href="/tasks/logout" class="button-link" style="background:red; margin: 10px;">Logout</a>
+
+<h1>Admin Dashboard</h1>
+
+<!-- Display Users -->
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Date Created</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for user <- @users do %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.inserted_at |> Timex.format!("%Y-%m-%d", :strftime) %></td>
+        <td class="actions">
+          <a href={"/admin/#{user.id}/tasks"} class="button-link">View Tasks</a>
+          <a href={"/admin/#{user.id}/delete"} class="button-link delete-link" data-user-id={user.id}>Delete</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- Modal for Deletion -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Are you sure you want to delete this user?</p>
+    <button id="confirmDelete" class="button-link">Yes, Delete</button>
+    <button id="cancelDelete" class="button-link">Cancel</button>
+  </div>
+</div>
+
+<script>
+  // Modal JavaScript
+  var modal = document.getElementById("deleteModal");
+  var span = document.getElementsByClassName("close")[0];
+  var cancelBtn = document.getElementById("cancelDelete");
+  var confirmBtn = document.getElementById("confirmDelete");
+  var userIdToDelete = null;
+
+  document.querySelectorAll('.delete-link').forEach(function(deleteLink) {
+    deleteLink.onclick = function(event) {
+      event.preventDefault();
+      userIdToDelete = this.getAttribute('data-user-id');
+      modal.style.display = "block";
+    };
+  });
+
+  span.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  cancelBtn.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  confirmBtn.onclick = function() {
+    window.location.href = "/admin/" + userIdToDelete + "/delete";
+  };
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+</script>
+
+</body>
+</html>

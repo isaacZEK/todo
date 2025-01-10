@@ -60,7 +60,7 @@ defmodule Todo.MixProject do
       {:bandit, "~> 1.5"},
       {:comeonin, "~> 5.3"},
       {:pbkdf2_elixir, "~> 2.0"},
-
+      {:timex, "~> 3.7"}
     ]
   end
 

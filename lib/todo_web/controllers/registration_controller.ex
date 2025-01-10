@@ -5,7 +5,7 @@ defmodule TodoWeb.RegistrationController do
 
   @spec index(Plug.Conn.t(), any()) :: Plug.Conn.t()
   def index(conn, _params) do
-    render(conn, "index.html")
+    render(conn, :index)
   end
 
  def new(conn, _params) do
@@ -16,10 +16,14 @@ end
 def create(conn,user_params) do
   result = Accounts.create_user(user_params)
     case result do
-      {:ok, _user} ->
+      {:ok, user} ->
         conn
         |> put_flash(:info, "Account created successfully!")
-        |> redirect(to: "/tasks")
+        |> redirect(to: if user.is_admin do
+          "/admin"
+        else
+          "/todo"
+        end)
 
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -43,7 +47,11 @@ end
       |> put_session(:user_id, user.id) # Store user ID in session
       |> configure_session(renew: true) # Protect against session fixation
       |> put_flash(:info, "Logged in successfully!")
-      |> redirect(to: "/todo") # Redirect to the tasks page
+      |> redirect(to: if user.is_admin do
+        "/admin"
+      else
+        "/todo"
+      end)# Redirect to the tasks page
 
     {:error, _reason} ->
       conn

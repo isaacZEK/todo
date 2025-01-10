@@ -8,6 +8,8 @@ defmodule Todo.Accounts.User do
     field :name, :string
     field :email, :string
     field :password_hash, :string
+    field :is_admin, :boolean, default: false
+    field :deleted_at, :utc_datetime
 
     #virtual field
     field :password, :string, virtual: true
@@ -18,7 +20,7 @@ defmodule Todo.Accounts.User do
   #changeset for user registration
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:name,:email, :password])
+    |> cast(attrs, [:name,:email, :password, :is_admin, :deleted_at])
     |> validate_required([:email,:password])
     |> validate_format(:email, ~r/@/, message: "must contain @")
     |> validate_length(:password, min: 6)
