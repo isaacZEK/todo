@@ -9,7 +9,7 @@ defmodule Todo.Accounts.User do
     field :email, :string
     field :password_hash, :string
     field :is_admin, :boolean, default: false
-    field :deleted_at, :utc_datetime
+    field :deleted_at, :utc_datetime, default: nil
 
     #virtual field
     field :password, :string, virtual: true

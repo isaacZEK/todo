@@ -10,7 +10,7 @@ defmodule TodoWeb.RegistrationController do
 
  def new(conn, _params) do
   changeset = Accounts.change_user(%User{})
-  render(conn, :new, changeset: changeset)
+  render(conn, :new, changeset: changeset, layout: false)
 end
 
 def create(conn,user_params) do
@@ -22,11 +22,11 @@ def create(conn,user_params) do
         |> redirect(to: if user.is_admin do
           "/admin"
         else
-          "/todo"
+          "/tasks"
         end)
 
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset,layout: false)
     end
 
 end
@@ -56,7 +56,7 @@ end
     {:error, _reason} ->
       conn
       |> put_flash(:error, "Invalid email or password.")
-      |> render("index.html") # Re-render the login page
+      |> render("index.html", layout: false) # Re-render the login page
   end
 end
 

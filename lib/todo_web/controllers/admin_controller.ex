@@ -19,10 +19,10 @@ def delete(conn, %{"id" => id}) do
   |> redirect(to: "/admin")
 end
 
-def tasks(conn, %{"id" => id}) do
+def view_user_tasks(conn, %{"id" => id}) do
   user = Accounts.get_user_by_id!(id)
   tasks = Tasks.list_tasks(user.id)
-  render(conn, "tasks.html", tasks: tasks)
+  render(conn, "view_user_tasks.html", user: user, tasks: tasks)
 end
 
 end

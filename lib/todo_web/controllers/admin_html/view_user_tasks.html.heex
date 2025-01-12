@@ -1,0 +1,99 @@
+<h1>Tasks for <%= @user.name %></h1>
+
+<div class="actions">
+  <a href="/admin" class="button-link back-button">Back to Admin Index</a>
+</div>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Inserted At</th>
+      <th>Updated At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for task <- @tasks do %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td><%= task.done %></td>
+        <td><%= task.inserted_at %></td>
+        <td><%= task.updated_at %></td>
+        <td><%= task.deleted_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<style>
+  /* General styling */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+  }
+
+  h1 {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 2em;
+      color: #333;
+  }
+
+  .actions {
+      width: 90%;
+      margin: 10px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .admin-table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+  }
+
+  th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+  }
+
+  .button-link {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+  }
+
+  .button-link:hover {
+      background-color: #0056b3;
+  }
+
+  .back-button {
+      margin-bottom: 20px;
+  }
+</style>

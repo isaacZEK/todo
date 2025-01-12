@@ -77,7 +77,7 @@ defmodule TodoWeb.Router do
 
     get "/", AdminController, :index
     get "/:id/delete", AdminController, :delete
-    get "/:id/tasks", AdminController, :users
+    get "/:id/tasks", AdminController, :view_user_tasks
     # get "/users/:id/tasks", TaskController, :tasks
 
   end
