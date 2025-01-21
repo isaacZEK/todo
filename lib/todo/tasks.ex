@@ -32,7 +32,7 @@ end
 
 def soft_delete_task(%Task{} = task) do
   task
-  |> Task.changeset(%{"deleted_at" => DateTime.utc_now()})
+  |> Task.changeset(%{"deleted_at" => true})
   |> Repo.update()
 end
 

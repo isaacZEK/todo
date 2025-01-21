@@ -32,6 +32,24 @@ def list_non_admin_users do
   |> Repo.all()
 end
 
+
+#list users
+# def list_users do
+#   Repo.all(User)
+# end
+
+#update user
+def update_user(%User{} = user, attrs) do
+  user
+  |> User.registration_changeset(attrs)
+  |> Repo.update()
+end
+
+# def delete_user(%User{} = user) do
+#   Repo.delete(user)
+# end
+
+
 # Soft delete a user by updating the `deleted_at` field
 def soft_delete_user(user) do
   user
@@ -57,21 +75,7 @@ def authenticate_user(email, password) do
     end
   end
 
-  #list users
-  def list_users do
-    Repo.all(User)
-  end
 
-  #update user
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.registration_changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
 
 
 end

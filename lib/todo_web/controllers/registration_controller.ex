@@ -31,11 +31,6 @@ def create(conn,user_params) do
 
 end
 
-
-  # ------------------------
-  # SESSION HANDLING STARTS
-  # ------------------------
-
  # Handle user authentication
  def authenticate(conn, %{"email" => email, "password" => password}) do
 
